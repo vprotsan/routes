@@ -1,26 +1,24 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { Route, NavLink, Redirect } from 'react-router-dom';
 
+import CourseContainer from './courses/CourseContainer';
+import { HTMLCourses, CSSCourses, JSCourses } from '../data/courses';
 
-import Css from './courses/CSS';
-import Html from './courses/HTML';
-import JavaScript from './courses/JavaScript';
-
-const Courses = () => (
+const Courses = ({match}) => (
   <div className="main-content courses">
     <div className="course-header group">
       <h2>Courses</h2>
       <ul className="course-nav">
-        <li><NavLink to='/courses/html'>HTML</NavLink></li>
-        <li><NavLink to='/courses/css'>CSS</NavLink></li>
-        <li><NavLink to='/courses/javascript'>JavaScript</NavLink></li>
+        <li><NavLink to={`${match.url}/html`}>HTML</NavLink></li>
+        <li><NavLink to={`${match.url}/css`}>CSS</NavLink></li>
+        <li><NavLink to={`${match.url}/javascript`}>JavaScript</NavLink></li>
       </ul>
     </div>
 
-    <Route exact path="/courses/html" component={Html}/>
-    <Route exact path="/courses/css" component={Css}/>
-    <Route exact path="/courses/javascript" component={JavaScript}/>
+    <Route exact path={match.path} render={ () => <Redirect to={`${match.path}/html`}/>}/>
+    <Route exact path={`${match.path}/html`} render={ () => <CourseContainer data={HTMLCourses}/>}/>
+    <Route exact path={`${match.path}/css`} render={ () => <CourseContainer data={CSSCourses}/>}/>
+    <Route exact path={`${match.path}/javascript`} render={ () => <CourseContainer data={JSCourses}/>}/>
   </div>
 );
 
